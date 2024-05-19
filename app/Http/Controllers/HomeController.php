@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Product::all();
-        return view('welcome', ['posts' => $posts]);
+        $products = Product::limit(6)->get();
+        return view('welcome', ['products' => $products]);
     }
 }

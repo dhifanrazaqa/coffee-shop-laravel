@@ -13,31 +13,36 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $coffeeId = DB::table('categories')->insertGetId([
-            'id' => Str::uuid(),
+        $coffeeId = Str::uuid();
+        $nonCoffeeId = Str::uuid();
+        $bakeryId = Str::uuid();
+        $iceCreamId = Str::uuid();
+
+        DB::table('categories')->insert([
+            'id' => $coffeeId,
             'title' => 'Coffee',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        $nonCoffeeId = DB::table('categories')->insertGetId([
-            'id' => Str::uuid(),
+        DB::table('categories')->insert([
+            'id' => $nonCoffeeId,
             'title' => 'Non-Coffee',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        $iceCreamId = DB::table('categories')->insertGetId([
-            'id' => Str::uuid(),
+        DB::table('categories')->insert([
+            'id' => $iceCreamId,
             'title' => 'Ice Cream',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        $bakeryId = DB::table('categories')->insertGetId([
-            'id' => Str::uuid(),
+        DB::table('categories')->insert([
+            'id' => $bakeryId,
             'title' => 'Bakery',
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-
+        echo "Inserted product ID: " . $coffeeId;
         DB::table('products')->insert([
             [
                 'id' => Str::uuid(),
