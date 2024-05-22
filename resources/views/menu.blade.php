@@ -41,70 +41,15 @@
                 </div>
 
                 <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                    @foreach ($products as $products)
-                        <div x-data="{ selectedButton: null }" class="group relative border-2 rounded-lg border-emerald-500 p-4">
-                            <div
-                                class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
-                                <img src="{{ $products->image_url }}" alt="{{ $products->title }}"
-                                    class="h-full w-full object-cover object-center lg:h-full lg:w-full">
-                            </div>
-                            <div class="mt-4 flex justify-between">
-                                <div>
-                                    <h3 class="text-lg font-bold text-black">
-                                        <a href="#">
-                                            {{ $products->title }}
-                                        </a>
-                                    </h3>
-                                </div>
-                                <p class="text-lg font-extrabold text-emerald-700">Rp18.000</p>
-                            </div>
-                            <div class="flex justify-between mt-4 space-x-4">
-                                <div>
-                                    <button
-                                        @click="selectedButton = updateSize(selectedButton, 1, '{{ $products->title }}')"
-                                        :class="{ 'bg-blue-500 text-white': selectedButton ===
-                                            1, 'bg-gray-200 text-gray-700': selectedButton !== 1 }"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </button>
-                                    <p class="font-bold">Small</p>
-                                </div>
-
-                                <div>
-                                    <button
-                                        @click="selectedButton = updateSize(selectedButton, 2, '{{ $products->title }}')"
-                                        :class="{ 'bg-blue-500 text-white': selectedButton ===
-                                            2, 'bg-gray-200 text-gray-700': selectedButton !== 2 }"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <p class="font-bold">Medium</p>
-                                </div>
-
-                                <div>
-                                    <button
-                                        @click="selectedButton = updateSize(selectedButton, 3, '{{ $products->title }}')"
-                                        :class="{ 'bg-blue-500 text-white': selectedButton ===
-                                            3, 'bg-gray-200 text-gray-700': selectedButton !== 3 }"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 11l4-4 4 4M5 19l4-4 4 4" />
-                                        </svg>
-                                    </button>
-                                    <p class="font-bold">Large</p>
-                                </div>
-                            </div>
-                        </div>
+                    @foreach ($products as $product)
+                        <x-card>
+                            <x-slot name="image_url">
+                                {{ $product->image_url }}
+                            </x-slot>
+                            <x-slot name="title">
+                                {{ $product->title }}
+                            </x-slot>
+                        </x-card>
                     @endforeach
                 </div>
             </div>
@@ -164,20 +109,22 @@
         }
 
         function updateSize(selectedButton, sizeType, title) {
-            console.log('HIII')
             selectedButton = selectedButton === sizeType ? null : sizeType
 
             if (selectedButton === null) {
                 cart = cart.filter(obj => obj.title !== title)
             } else {
-                cart = [
-                    {
-                        'title': title,
-                        'size': sizeType,
-                        'qty': 1
-                    },
-                    ...cart
-                ]
+                const newData = {
+                    'title': title,
+                    'size': sizeType,
+                    'qty': 1
+                };
+                const index = cart.findIndex(item => item.title === newData.title);
+                if (index !== -1) {
+                    cart[index] = newData;
+                } else {
+                    cart.push(newData);
+                }
             }
             if (cart.length > 0) {
                 btnAddCart.classList.remove("hidden");
