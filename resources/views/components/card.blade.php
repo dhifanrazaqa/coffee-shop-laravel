@@ -12,12 +12,12 @@
                 </a>
             </h3>
         </div>
-        <p class="text-lg font-extrabold text-emerald-700">Rp18.000</p>
+        <p class="text-lg font-extrabold text-emerald-700">Rp{{ $price }}</p>
     </div>
     <div class="flex justify-between mt-4 space-x-4">
         <x-home.circle-button>
             <x-slot name="click">
-                selectedButton = updateSize(selectedButton, 1, '{{ $title }}')
+                selectedButton = updateSize(selectedButton, 1, '{{ $id }}')
             </x-slot>
             <x-slot name="size">
                 1
@@ -30,7 +30,7 @@
 
         <x-home.circle-button>
             <x-slot name="click">
-                selectedButton = updateSize(selectedButton, 2, '{{ $title }}')
+                selectedButton = updateSize(selectedButton, 2, '{{ $id }}')
             </x-slot>
             <x-slot name="size">
                 2
@@ -43,7 +43,7 @@
 
         <x-home.circle-button>
             <x-slot name="click">
-                selectedButton = updateSize(selectedButton, 3, '{{ $title }}')
+                selectedButton = updateSize(selectedButton, 3, '{{ $id }}')
             </x-slot>
             <x-slot name="size">
                 3

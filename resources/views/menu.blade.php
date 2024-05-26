@@ -9,10 +9,9 @@
                     <div class="flex justify-between mt-4 space-x-4">
                         <div>
                             <a href="/menu"
-                                class="{{ request()->routeIs('menu') ?
-                                'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
-                                :
-                                'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
+                                class="{{ request()->routeIs('menu')
+                                    ? 'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
+                                    : 'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,20 +21,19 @@
                             <p class="font-bold">All</p>
                         </div>
                         @foreach ($categories as $category)
-                        <div>
-                            <a href="/menu/{{ $category->title }}"
-                                class="{{ last(request()->segments()) === $category->title ?
-                                'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
-                                :
-                                'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                            </a>
-                            <p class="font-bold">{{ $category->title }}</p>
-                        </div>
+                            <div>
+                                <a href="/menu/{{ $category->title }}"
+                                    class="{{ last(request()->segments()) === $category->title
+                                        ? 'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
+                                        : 'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </a>
+                                <p class="font-bold">{{ $category->title }}</p>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -46,8 +44,14 @@
                             <x-slot name="image_url">
                                 {{ $product->image_url }}
                             </x-slot>
+                            <x-slot name="price">
+                                {{ $product->price }}
+                            </x-slot>
                             <x-slot name="title">
                                 {{ $product->title }}
+                            </x-slot>
+                            <x-slot name="id">
+                                {{ $product->id }}
                             </x-slot>
                         </x-card>
                     @endforeach
@@ -67,19 +71,20 @@
         </button>
     </div>
     <div class="fixed bottom-8 left-8">
-        <button onclick="showCookieValue()"
-            class="flex items-center bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-            <h2 class="text-2xl">Show</h2>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                </path>
-            </svg>
-        </button>
+        <x-home.floating-button onclick="goToOrder()">
+            <x-slot name="icon">
+                <img src="{{ asset('images/shopping-cart.png') }}" alt="Cart Icon" width="30" height="30">
+            </x-slot>
+            Cart
+        </x-home.floating-button>
     </div>
     <script>
         let cart = []
         const btnAddCart = document.getElementById("btn-add-cart");
+
+        function goToOrder() {
+            window.location.href = "/order";
+        }
 
         function resetSelected() {
             document.querySelectorAll('[x-data]').forEach(function(element) {
@@ -108,18 +113,19 @@
             return null;
         }
 
-        function updateSize(selectedButton, sizeType, title) {
+        function updateSize(selectedButton, sizeType, id) {
+
             selectedButton = selectedButton === sizeType ? null : sizeType
 
             if (selectedButton === null) {
-                cart = cart.filter(obj => obj.title !== title)
+                cart = cart.filter(obj => obj.id !== id)
             } else {
                 const newData = {
-                    'title': title,
+                    'id': id,
                     'size': sizeType,
                     'qty': 1
                 };
-                const index = cart.findIndex(item => item.title === newData.title);
+                const index = cart.findIndex(item => item.id === newData.id);
                 if (index !== -1) {
                     cart[index] = newData;
                 } else {
@@ -139,7 +145,7 @@
             let cookieCart = getCookie("cart");
             cookieCart = JSON.parse(cookieCart);
 
-            if(!cookieCart) {
+            if (!cookieCart) {
                 cookieCart = []
             }
 
@@ -163,7 +169,7 @@
             let found = false;
 
             for (let i = 0; i < cookieCart.length; i++) {
-                if (cookieCart[i].title === obj.title && cookieCart[i].size === obj.size) {
+                if (cookieCart[i].id === obj.id && cookieCart[i].size === obj.size) {
                     cookieCart[i].qty++;
                     found = true;
                     break;

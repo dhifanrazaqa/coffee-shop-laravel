@@ -4,6 +4,19 @@
 
     {{-- Body --}}
     <div class="flex flex-col z-10">
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Menampilkan pesan sukses -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
         <div class="bg-white">
             <div class="flex flex-col mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <h1 id="menu" class="text-7xl font-bold">NEW ARRIVALS</h1>
@@ -14,14 +27,21 @@
                             <x-slot name="image_url">
                                 {{ $product->image_url }}
                             </x-slot>
+                            <x-slot name="price">
+                                {{ $product->price }}
+                            </x-slot>
                             <x-slot name="title">
                                 {{ $product->title }}
+                            </x-slot>
+                            <x-slot name="id">
+                                {{ $product->id }}
                             </x-slot>
                         </x-card>
                     @endforeach
                 </div>
                 <div class="flex mt-12 justify-center">
-                    <a href="/menu" class="flex justify-center w-52 bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
+                    <a href="/menu"
+                        class="flex justify-center w-52 bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
                         <h2 class="text-2xl">See All</h2>
                     </a>
                 </div>
@@ -33,7 +53,8 @@
             <x-slot name="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                     </path>
                 </svg>
             </x-slot>
@@ -83,19 +104,19 @@
             return null;
         }
 
-        function updateSize(selectedButton, sizeType, title) {
+        function updateSize(selectedButton, sizeType, id) {
 
             selectedButton = selectedButton === sizeType ? null : sizeType
 
             if (selectedButton === null) {
-                cart = cart.filter(obj => obj.title !== title)
+                cart = cart.filter(obj => obj.id !== id)
             } else {
                 const newData = {
-                    'title': title,
+                    'id': id,
                     'size': sizeType,
                     'qty': 1
                 };
-                const index = cart.findIndex(item => item.title === newData.title);
+                const index = cart.findIndex(item => item.id === newData.id);
                 if (index !== -1) {
                     cart[index] = newData;
                 } else {
@@ -115,7 +136,7 @@
             let cookieCart = getCookie("cart");
             cookieCart = JSON.parse(cookieCart);
 
-            if(!cookieCart) {
+            if (!cookieCart) {
                 cookieCart = []
             }
 
@@ -139,7 +160,7 @@
             let found = false;
 
             for (let i = 0; i < cookieCart.length; i++) {
-                if (cookieCart[i].title === obj.title && cookieCart[i].size === obj.size) {
+                if (cookieCart[i].id === obj.id && cookieCart[i].size === obj.size) {
                     cookieCart[i].qty++;
                     found = true;
                     break;

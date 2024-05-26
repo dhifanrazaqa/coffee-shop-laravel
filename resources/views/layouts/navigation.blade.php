@@ -12,9 +12,21 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if(Auth::check() && Auth::user()->type == 'admin')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->type == 'user')
+                        <x-nav-link :href="route('order.history')" :active="request()->routeIs('order.history')">
+                            {{ __('History') }}
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->type == 'user')
+                        <x-nav-link :href="route('balance.show')" :active="request()->routeIs('balance.show')">
+                            {{ __('Balance') }}
+                        </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('menu')" :active="request()->routeIs('menu*')">
                         {{ __('Menu') }}
                     </x-nav-link>

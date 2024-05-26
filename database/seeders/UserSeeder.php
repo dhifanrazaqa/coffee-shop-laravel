@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'id' => Str::uuid(),
             'name' => 'Dhifan User',
             'email' => 'dhifan@example.com',
             'password' => Hash::make('12345678'),
@@ -23,7 +22,6 @@ class UserSeeder extends Seeder
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
         DB::table('users')->insert([
-            'id' => Str::uuid(),
             'name' => 'Razaqa Admin',
             'email' => 'razaqa@example.com',
             'password' => Hash::make('12345678'),
