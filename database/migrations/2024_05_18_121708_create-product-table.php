@@ -21,6 +21,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('image_url');
+            $table->text('description');
             $table->foreignId('category_id')->nullable();
             $table->integer('price');
             $table->timestamps();

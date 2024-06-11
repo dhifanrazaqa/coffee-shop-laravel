@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('total_price');
+            $table->enum('status', ['In Process', 'Successful']);
             $table->timestamps();
         });
     }

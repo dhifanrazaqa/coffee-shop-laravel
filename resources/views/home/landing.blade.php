@@ -1,25 +1,22 @@
 <div>
-    <img class="absolute top-14 w-full z-50" src="{{ asset('images/header.png') }}" alt="background">
-    <div class="bg-white grid grid-cols-1 md:grid-cols-12 z-0 h-screen w-full justify-center items-center mt-0 pb-0">
-        <div class="hidden col-span-3 pl-10 lg:pl-16 md:flex flex-col gap-6 lg:gap-16">
-            <img class="w-4/6" src="{{ asset('images/people.png') }}" alt="background">
-            <p class="text-left text-sm lg:text-lg xl:text-xk font-extrabold font-sans">Kick off your day with the best coffee in town! Whether you like it plain and strong or with a splash of milk, our coffee is sure to make your mornings better.</p>
+    <div class="grid grid-cols-1 md:grid-cols-12 h-screen w-full justify-center mt-0 pb-0">
+        <div class="col-span-7 p-2 lg:pl-16 flex flex-col gap-6 lg:gap-4 mt-6 md:mt-16">
+            <h1 class="text-app_primary font-bold text-3xl md:text-8xl">Indonesia's<br>Coffee Heritage</h1>
+            <p class="hidden md:block text-left text-sm lg:text-lg xl:text-xk font-light">Handpicked beans,
+                masterfully<br>crafted,
+                delivering a taste of tradition in every cup</p>
+            <a href="/menu"
+                class="hidden md:block bg-app_primary text-white font-bold text-center rounded-lg w-36 p-4 mt-10">Shop
+                Now</a>
         </div>
-        <div class="col-span-6 flex flex-col justify-center items-center gap-12">
-            <img class="w-full" src="{{ asset('images/main-crop.png') }}" alt="background">
-            <div class="md:hidden">
-                <a href="#menu" class="flex gap-2 items-center bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-                    <h2 class="text-xl">Shop Now</h2>
-                </a>
-            </div>
-        </div>
-        <div class="hidden col-span-3 pr-10 lg:pr-24 md:flex flex-col gap-16 items-center">
-            <img class="w-4/6" src="{{ asset('images/bigger-cup.png') }}" alt="background">
-            <div class="">
-                <a href="#menu" class="flex gap-2 items-center bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-                    <h2 class="text-base lg:text-2xl">Shop Now</h2>
-                </a>
-            </div>
+        <div class="col-span-5 flex justify-end">
+            <img class="h-2/3 object-contain" src="{{ asset('images/coffee-right.png') }}" alt="background">
+            <p class="absolute block w-1/4 bottom-1/3 left-5 md:hidden text-left text-base md:text-lg xl:text-xk font-light">Handpicked beans,
+                masterfully<br>crafted,
+                delivering a taste of tradition in every cup</p>
+            <a href="/menu"
+                class="absolute bottom-20 left-5 block md:hidden bg-app_primary text-white font-bold text-center rounded-lg w-36 p-4 mt-10">Shop
+                Now</a>
         </div>
     </div>
 </div>

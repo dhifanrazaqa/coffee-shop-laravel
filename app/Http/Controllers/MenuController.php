@@ -9,18 +9,20 @@ use App\Models\Product;
 
 class MenuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $perPage = $request->input('per_page', 9);
+        $products = Product::paginate($perPage);
         $categories = Category::all();
         return view('menu', ['products' => $products, 'categories' => $categories]);
     }
 
-    public function indexByCategory($categoryName)
-    {
+    public function indexByCategory(Request $request, $categoryName)
+    {   
+        $perPage = $request->input('per_page', 10);
         $products = Product::whereHas('category', function ($query) use ($categoryName) {
             $query->where('title', $categoryName);
-        })->get();
+        })->paginate($perPage);
         $categories = Category::all();
         return view('menu', ['products' => $products, 'categories' => $categories]);
     }

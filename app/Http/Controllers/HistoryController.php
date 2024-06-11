@@ -11,7 +11,7 @@ class HistoryController extends Controller
     {
         $user = Auth::user();
 
-        $orders = $user->orders()->with('products')->get();
+        $orders = $user->orders()->orderBy('created_at', 'desc')->with('products')->paginate(10);
         
         return view('history', ['orders' => $orders]);
     }

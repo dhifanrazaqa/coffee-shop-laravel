@@ -11,8 +11,15 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                app_background: '#FBFAF5',
+                app_primary: '#4A2E2C',
+                app_grey_low: '#EAEAEA',
+                app_grey_high: '#D9D9D9',
+                app_cream: '#F7F5EC',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
         },
     },

@@ -16,6 +16,7 @@ class OrderController extends Controller
         $data = $_COOKIE;
         $cartData = [];
         $totalPrice = 0;
+        $balance = null;
 
         if ((isset($data['cart']))) {
             $cartData = json_decode($data['cart']);
@@ -37,8 +38,10 @@ class OrderController extends Controller
         }
 
         $user = Auth::user();
-
-        return view('order', ['carts' => $cartData, 'totalPrice' => $totalPrice, 'balance' => $user->balance]);
+        if (isset($user)) {
+            $balance = $user->balance;
+        }
+        return view('order', ['carts' => $cartData, 'totalPrice' => $totalPrice, 'balance' => $balance]);
     }
 
     public function store(Request $request)
@@ -48,7 +51,7 @@ class OrderController extends Controller
 
 
         if ((int) $user->balance < (int) $request->total_price) {
-            return redirect()->route('home')->with('error', 'error not enough balance');
+            return back()->with('error', 'Not enough balance');
         }
 
         if ((isset($data['cart']))) {
@@ -58,6 +61,7 @@ class OrderController extends Controller
             $order = new Order();
             $order->user_id = $user->id;
             $order->total_price = $request->total_price;
+            $order->status = 'In Process';
             $order->save();
 
             foreach ($cartData as $product) {
@@ -75,9 +79,27 @@ class OrderController extends Controller
             $topUpHistory->amount = $order->total_price;
             $topUpHistory->type = 'expenditure';
             $topUpHistory->save();
-            
+
             $user->save();
-            return redirect()->route('home')->with('success', 'Order created successfully.');
+            return redirect()->route('order.history')->with('success', 'Order created successfully.');
         }
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::find($id);
+        if ($order) {
+            $order->status = $request->input('status');
+            $order->save();
+            // dd($request);
+            if ($request->is('dashboard/order*')) {
+                return redirect()->route('dashboard.order');
+            } else {
+                return redirect()->route('dashboard');
+            }
+
+
+        }
+        return response()->json(['message' => 'Post not found'], 404);
     }
 }

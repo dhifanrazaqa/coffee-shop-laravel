@@ -1,38 +1,38 @@
 <x-app-layout>
-    <div id="test" class="flex flex-col">
-        <div class="bg-white">
-            <div class="flex flex-col mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-                <div class="flex justify-between">
-                    <h1 id="menu" class="text-7xl font-bold">NEW ARRIVALS</h1>
+    <div class="flex flex-col">
+        <div>
+            <div class="flex flex-col mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between">
+                    <h1 id="menu" class="text-7xl text-app_primary font-bold">New Arrivals</h1>
 
                     {{-- Category --}}
                     <div class="flex justify-between mt-4 space-x-4">
-                        <div>
+                        <div class="flex flex-col justify-center items-center">
                             <a href="/menu"
                                 class="{{ request()->routeIs('menu')
-                                    ? 'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
+                                    ? 'bg-app_primary text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
                                     : 'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
+                                <img src="{{ asset('images/all.png') }}" class="w-6 h-6">
                             </a>
                             <p class="font-bold">All</p>
                         </div>
                         @foreach ($categories as $category)
-                            <div>
+                            <div class="flex flex-col justify-center items-center">
                                 <a href="/menu/{{ $category->title }}"
                                     class="{{ last(request()->segments()) === $category->title
-                                        ? 'bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
+                                        ? 'bg-app_primary text-white w-10 h-10 flex items-center justify-center rounded-full focus:outline-none'
                                         : 'bg-gray-200 text-gray-700 w-10 h-10 flex items-center justify-center rounded-full focus:outline-none' }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
+                                    @if ($category->title == 'Coffee')
+                                        <img src="{{ asset('images/coffee_ic.png') }}" class="w-6 h-6">
+                                    @elseif($category->title == 'Non-Coffee')
+                                        <img src="{{ asset('images/non-coffee.png') }}" class="w-6 h-6">
+                                    @elseif($category->title == 'Bakery')
+                                        <img src="{{ asset('images/bakery.png') }}" class="w-6 h-6">
+                                    @elseif($category->title == 'Ice Cream')
+                                        <img src="{{ asset('images/ice-cream.png') }}" class="w-6 h-6">
+                                    @endif
                                 </a>
-                                <p class="font-bold">{{ $category->title }}</p>
+                                <p class="font-bold text-xs">{{ $category->title }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -45,10 +45,13 @@
                                 {{ $product->image_url }}
                             </x-slot>
                             <x-slot name="price">
-                                {{ $product->price }}
+                                {{ number_format($product->price, 2, ',', '.') }}
                             </x-slot>
                             <x-slot name="title">
                                 {{ $product->title }}
+                            </x-slot>
+                            <x-slot name="description">
+                                {{ $product->description }}
                             </x-slot>
                             <x-slot name="id">
                                 {{ $product->id }}
@@ -56,21 +59,22 @@
                         </x-card>
                     @endforeach
                 </div>
+                {{ $products->links('vendor.pagination.custom') }}
             </div>
         </div>
     </div>
-    <div id="btn-add-cart" class="hidden fixed bottom-8 right-8">
+    <div id="btn-add-cart" class="hidden fixed bottom-4 md:bottom-8 right-4 md:right-8">
         <button onclick="addToCart()"
-            class="flex items-center bg-emerald-600 hover:bg-emerald-900 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-            <h2 class="text-2xl">Add To Cart</h2>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+            class="flex items-center bg-app_primary hover:bg-yellow-950 text-white font-medium py-2 px-3 rounded-full shadow-lg">
+            <h2 class="text-lg lg:text-2xl">Add To Cart</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 md:h-10 w-5 md:w-10" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                 </path>
             </svg>
         </button>
     </div>
-    <div class="fixed bottom-8 left-8">
+    <div class="fixed bottom-4 md:bottom-8 left-4 md:left-8">
         <x-home.floating-button onclick="goToOrder()">
             <x-slot name="icon">
                 <img src="{{ asset('images/shopping-cart.png') }}" alt="Cart Icon" width="30" height="30">

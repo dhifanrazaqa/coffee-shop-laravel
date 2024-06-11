@@ -9,6 +9,13 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['status'];
+
+    public static $fieldOptions = [
+        'In Process',
+        'Successful',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
