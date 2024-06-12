@@ -31,8 +31,8 @@ Route::post('/order', [OrderController::class, 'store'])->middleware(['auth', 'u
 
 Route::get('/history', [HistoryController::class, 'index'])->middleware(['auth', 'user-access:user'])->name('order.history');
 
-Route::get('/balance', [BalanceController::class, 'show'])->name('balance.show');
-Route::post('/balance/topup', [BalanceController::class, 'topup'])->name('balance.topup');
+Route::get('/balance', [BalanceController::class, 'show'])->middleware(['auth', 'user-access:user'])->name('balance.show');
+Route::post('/balance/topup', [BalanceController::class, 'topup'])->middleware(['auth', 'user-access:user'])->name('balance.topup');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

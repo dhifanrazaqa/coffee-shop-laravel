@@ -69,6 +69,7 @@ class OrderController extends Controller
                 $order->products()->attach($productModel->id, [
                     'quantity' => $product->qty,
                     'price' => $productModel->price,
+                    'size' => $product->size,
                 ]);
             }
 
@@ -81,6 +82,8 @@ class OrderController extends Controller
             $topUpHistory->save();
 
             $user->save();
+
+            Cookie::queue(Cookie::forget('cart'));
             return redirect()->route('order.history')->with('success', 'Order created successfully.');
         }
     }

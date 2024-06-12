@@ -82,6 +82,7 @@
             Cart
         </x-home.floating-button>
     </div>
+    @include('home.footer')
     <script>
         let cart = []
         const btnAddCart = document.getElementById("btn-add-cart");

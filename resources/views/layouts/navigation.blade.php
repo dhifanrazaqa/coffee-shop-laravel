@@ -20,16 +20,6 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home*')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    @if (Auth::check() && Auth::user()->type == 'user')
-                        <x-nav-link :href="route('order.history')" :active="request()->routeIs('order.history')">
-                            {{ __('History') }}
-                        </x-nav-link>
-                    @endif
-                    @if (Auth::check() && Auth::user()->type == 'user')
-                        <x-nav-link :href="route('balance.show')" :active="request()->routeIs('balance.show')">
-                            {{ __('Balance') }}
-                        </x-nav-link>
-                    @endif
                     <x-nav-link :href="route('menu')" :active="request()->routeIs('menu*')">
                         {{ __('Menu') }}
                     </x-nav-link>
@@ -43,6 +33,16 @@
                     @else
                         <x-nav-link href="#about" :active="request()->is('#about')">
                             {{ __('About') }}
+                        </x-nav-link>
+                    @endif
+                    @if (Auth::check() && Auth::user()->type == 'user')
+                        <x-nav-link :href="route('order.history')" :active="request()->routeIs('order.history')">
+                            {{ __('History') }}
+                        </x-nav-link>
+                    @endif
+                    @if (Auth::check() && Auth::user()->type == 'user')
+                        <x-nav-link :href="route('balance.show')" :active="request()->routeIs('balance.show')">
+                            {{ __('Balance') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -113,38 +113,82 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden bg-app_cream">
+        <div class="pt-2 pb-3 space-y-1 bg-app_cream">
+            @if (Auth::check())
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::check() && Auth::user()->type == 'admin')
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+            @endif
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home*')">
+                {{ __('Home') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu*')">
+                {{ __('Menu') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('order')" :active="request()->routeIs('order')">
+                {{ __('Order') }}
+            </x-responsive-nav-link>
+            @if (!request()->routeIs('home'))
+                <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('')">
+                    {{ __('About') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link href="#about" :active="request()->is('#about')">
+                    {{ __('About') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::check() && Auth::user()->type == 'user')
+                <x-responsive-nav-link :href="route('order.history')" :active="request()->routeIs('order.history')">
+                    {{ __('History') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::check() && Auth::user()->type == 'user')
+                <x-responsive-nav-link :href="route('balance.show')" :active="request()->routeIs('balance.show')">
+                    {{ __('Balance') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            @if (Auth::check())
+        @if (Auth::check())
+            <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
-            @endif
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
-                </form>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
             </div>
-        </div>
+        @else
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login*')">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    {{ __('Register') }}
+                </x-responsive-nav-link>
+            </div>
+        @endif
     </div>
 </nav>

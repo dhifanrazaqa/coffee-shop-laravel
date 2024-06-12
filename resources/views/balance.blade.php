@@ -51,4 +51,6 @@
             </div>
         </div>
     </div>
+
+    @include('home.footer')
 </x-app-layout>
