@@ -66,14 +66,29 @@ class DashboardHomeController extends Controller
     }
 
     public function storeProduct(Request $request)
-    {
+    {   
+        $customMessages = [
+            'image.required' => 'The image field is required.',
+            'image.image' => 'The file must be an image.',
+            'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
+            'image.max' => 'The image may not be greater than 2MB.',
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'description.required' => 'The description field is required.',
+            'description.string' => 'The description must be a string.',
+            'price.required' => 'The price field is required.',
+            'price.numeric' => 'The price must be a number.',
+            'category_id.required' => 'The category field is required.',
+        ];
+
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'required',
-        ]);
+        ], $customMessages);
 
         $cloudinaryImage = $request->file('image')->storeOnCloudinary('products');
         $url = $cloudinaryImage->getSecurePath();

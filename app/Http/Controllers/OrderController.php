@@ -94,14 +94,8 @@ class OrderController extends Controller
         if ($order) {
             $order->status = $request->input('status');
             $order->save();
-            // dd($request);
-            if ($request->is('dashboard/order*')) {
-                return redirect()->route('dashboard.order');
-            } else {
-                return redirect()->route('dashboard');
-            }
-
-
+            
+            return back();
         }
         return response()->json(['message' => 'Post not found'], 404);
     }
