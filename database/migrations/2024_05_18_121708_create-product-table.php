@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('image_url');
             $table->text('description');
-            $table->foreignId('category_id')->nullable();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->integer('price');
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('balance_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('amount');
             $table->enum('type', ['income', 'expenditure']);
             $table->timestamps();
