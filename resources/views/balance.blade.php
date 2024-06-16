@@ -36,12 +36,19 @@
                     <tbody class="text-center border-2 border-app_primary">
                         @foreach ($expenditure as $history)
                             <tr class="border-2 border-app_primary">
-                                <td class="border-2 border-app_primary">{{ \Carbon\Carbon::parse($history->created_at)->isoFormat('DD MMMM YYYY, hh:mm A') }}
+                                <td class="border-2 border-app_primary">
+                                    {{ \Carbon\Carbon::parse($history->created_at)->isoFormat('DD MMMM YYYY, hh:mm A') }}
                                 </td>
                                 @if ($history->type == 'income')
-                                    <td><p class="text-green-500 text-sm lg:text-xl">+ Rp{{ number_format($history->amount, 2, ',', '.') }}</p></td>
+                                    <td>
+                                        <p class="text-green-500 text-sm lg:text-xl">+
+                                            Rp{{ number_format($history->amount, 2, ',', '.') }}</p>
+                                    </td>
                                 @else
-                                    <td><p class="text-red-500 text-sm lg:text-xl">- Rp{{ number_format($history->amount, 2, ',', '.') }}</p></td>
+                                    <td>
+                                        <p class="text-red-500 text-sm lg:text-xl">-
+                                            Rp{{ number_format($history->amount, 2, ',', '.') }}</p>
+                                    </td>
                                 @endif
                             </tr>
                         @endforeach
@@ -51,6 +58,73 @@
             </div>
         </div>
     </div>
+
+    <div x-cloak x-data="walletModal()">
+        <!-- Modal -->
+        <div x-show="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+            <div class="bg-app_cream p-4 rounded border-2 border-app_primary shadow-lg max-w-sm w-full">
+                <h2 class="text-xl font-semibold mb-4">Confirm Your Password</h2>
+                <template x-if="errorMessage">
+                    <p class="text-red-500 mb-4" x-text="errorMessage"></p>
+                </template>
+                <template x-if="successMessage">
+                    <p class="text-green-500 mb-4" x-text="successMessage"></p>
+                </template>
+                <input type="password" x-model="password" placeholder="Enter your password"
+                    class="w-full p-2 border-2 bg-app_cream border-gray-300 focus:ring-0 focus:outline-none focus:border-app_primary rounded">
+                <div class="flex justify-end space-x-2 mt-4">
+                    <button @click="confirmPassword"
+                        class="bg-app_primary text-white px-3 py-2 text-xs font-semibold rounded-full">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function walletModal() {
+            return {
+                showModal: true,
+                password: '',
+                errorMessage: '',
+                successMessage: '',
+                confirmPassword() {
+                    if (this.password === '') {
+                        this.errorMessage = 'Password cannot be empty';
+                        return;
+                    }
+                    fetch('/confirm-password', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            },
+                            body: JSON.stringify({
+                                password: this.password
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Password incorrect');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                this.successMessage = 'Password confirmed';
+                            } else {
+                                this.errorMessage = 'Password incorrect';
+                            }
+                            this.showModal = false;
+                            this.password = '';
+                        })
+                        .catch(error => {
+                            this.errorMessage = error.message;
+                        });
+                }
+            };
+        }
+    </script>
 
     @include('home.footer')
 </x-app-layout>

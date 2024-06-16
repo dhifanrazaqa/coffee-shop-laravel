@@ -1,15 +1,15 @@
 <div x-data="{ selectedButton: null }" class="group relative border-2 rounded-lg border-app_primary p-4">
     <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img src="{{ $image_url }}" alt="{{ $title }}"
-            class="h-full w-full rounded-lg object-cover object-center lg:h-full lg:w-full">
+            class="h-20 w-20 rounded-lg object-cover object-center lg:h-full lg:w-full">
     </div>
     <div class="mt-4 flex justify-between">
         <div>
-            <h3 class="text-lg font-bold text-app_primary">
+            <h3 class="text-base font-bold text-app_primary">
                 {{ $title }}
             </h3>
         </div>
-        <p class="text-lg font-extrabold text-emerald-700">Rp{{ $price }}</p>
+        <p class="text-base font-extrabold text-emerald-700">Rp{{ $price }}</p>
     </div>
     <div class="w-full my-4">
         <p class="text-md font-normal">{{ Str::limit($description, 70, '...') }}</p>
@@ -22,8 +22,8 @@
             <x-slot name="size">
                 1
             </x-slot>
-            <x-slot name="iconSize">
-                20
+        <x-slot name="iconSize">
+                18
             </x-slot>
             Small
         </x-home.circle-button>
@@ -36,7 +36,7 @@
                 2
             </x-slot>
             <x-slot name="iconSize">
-                25
+                20
             </x-slot>
             Medium
         </x-home.circle-button>
@@ -49,7 +49,7 @@
                 3
             </x-slot>
             <x-slot name="iconSize">
-                30
+                25
             </x-slot>
             Large
         </x-home.circle-button>

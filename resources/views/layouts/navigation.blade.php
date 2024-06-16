@@ -27,7 +27,7 @@
                         {{ __('Order') }}
                     </x-nav-link>
                     @if (!request()->routeIs('home'))
-                        <x-nav-link :href="route('home')" :active="request()->routeIs('')">
+                        <x-nav-link href="{{route('home')}}#about" :active="request()->routeIs('')">
                             {{ __('About') }}
                         </x-nav-link>
                     @else
@@ -135,7 +135,7 @@
                 {{ __('Order') }}
             </x-responsive-nav-link>
             @if (!request()->routeIs('home'))
-                <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('')">
+                <x-responsive-nav-link href="{{route('home')}}#about" :active="request()->routeIs('')">
                     {{ __('About') }}
                 </x-responsive-nav-link>
             @else

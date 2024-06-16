@@ -57,19 +57,8 @@
                                 Rp{{ number_format($product->price, 2, ',', '.') }}</td>
                             <td class="flex flex-col h-40 justify-center items-center gap-4">
                                 <a href="{{ route('dashboard.product.update', $product->id) }}"
-                                    class="flex justify-center gap-2 items-center border-2 w-24 h-10 bg-yellow-500 border-yellow-500">
-                                    <svg class="h-6 w-6" viewBox="0 0 1024 1024" class="icon" version="1.1"
-                                        xmlns="http://www.w3.org/2000/svg" fill="#4A2E2C">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path
-                                                d="M396.8 543.808V627.2h83.392l371.2-371.2L768 172.608l-371.2 371.2zM320 512l448-448 192 192-448 448H320V512z m499.2 371.2V512H896v448H64V128h448v76.8H140.8v678.4h678.4z"
-                                                fill="#4A2E2C"></path>
-                                        </g>
-                                    </svg>
-                                    <p>
+                                    class="flex justify-center gap-2 items-center border-2 w-24 h-10 rounded-xl bg-yellow-500 border-yellow-500">
+                                    <p class="font-semibold text-white">
                                         Edit
                                     </p>
                                 </a>
@@ -78,20 +67,8 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" @click="open = true"
-                                        class="flex justify-center gap-2 items-center border-2 w-24 h-10 bg-red-500 border-red-500">
-                                        <svg class="h-6 w-6" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-                                            fill="#4A2E2C">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                            </g>
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path fill="#4A2E2C"
-                                                    d="M352 192V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64H96a32 32 0 0 1 0-64h256zm64 0h192v-64H416v64zM192 960a32 32 0 0 1-32-32V256h704v672a32 32 0 0 1-32 32H192zm224-192a32 32 0 0 0 32-32V416a32 32 0 0 0-64 0v320a32 32 0 0 0 32 32zm192 0a32 32 0 0 0 32-32V416a32 32 0 0 0-64 0v320a32 32 0 0 0 32 32z">
-                                                </path>
-                                            </g>
-                                        </svg>
-                                        <p>
+                                        class="flex justify-center gap-2 items-center border-2 w-24 h-10 rounded-xl bg-red-500 border-red-500">
+                                        <p class="font-semibold text-white">
                                             Delete
                                         </p>
                                     </button>

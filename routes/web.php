@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -15,6 +16,9 @@ Route::get('/dashboard', [DashboardHomeController::class, 'index'])->middleware(
 Route::put('/dashboard/order/{order}/status', [OrderController::class, 'updateStatus'])->middleware(['auth', 'user-access:admin'])->name('update.order.status');
 Route::get('/dashboard/orders', [DashboardHomeController::class, 'indexOrder'])->middleware(['auth', 'user-access:admin'])->name('dashboard.order');
 Route::delete('/dashboard/orders/{id}/delete', [DashboardHomeController::class, 'deleteOrder'])->middleware(['auth', 'user-access:admin'])->name('dashboard.order.delete');
+
+Route::get('/dashboard/sales', [SaleController::class, 'index'])->middleware(['auth', 'user-access:admin'])->name('dashboard.sale');
+Route::get('/products/export/pdf', [SaleController::class, 'exportPdf'])->name('products.export.pdf');
 
 Route::get('/dashboard/products', [DashboardHomeController::class, 'indexProduct'])->middleware(['auth', 'user-access:admin'])->name('dashboard.product');
 Route::get('/dashboard/products/add', [DashboardHomeController::class, 'indexStoreProduct'])->middleware(['auth', 'user-access:admin'])->name('dashboard.product.add');
@@ -38,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/confirm-password', [ProfileController::class, 'confirm']);
 });
 
 require __DIR__ . '/auth.php';
